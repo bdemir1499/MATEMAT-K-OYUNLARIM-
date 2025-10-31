@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aritmetik Ortalama Macerası: SİBERPUNK VERSİYON</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- SİBERPUNK TEMELİ --- */
+        
+        /* CSS Değişkenleri (Açık Mavi Renk Paleti) */
+        :root {
+            --dark-bg: #0a0a1a;       /* Çok koyu lacivert/siyah */
+            --main-neon: #33ccff;    /* Ana Neon: Açık Mavi */
+            --secondary-neon: #00ffcc; /* İkincil Neon: Siyan/Turkuaz */
+            --accent-neon: #f7ff00;   /* Vurgu Neonu: Sarı */
+            --danger-neon: #ff3333;   /* Hata Neonu: Kırmızı */
+            --success-neon: #33ccff;  /* Başarı Neonu: Açık Mavi */
+            --font-color: #33ccff;   /* Ana yazı rengi: Açık Mavi */
+        }
+
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background-color: var(--dark-bg);
+            color: var(--font-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow: hidden; 
+        }
+
+        /* --- YANIP SÖNEN MATEMATİKSEL SEMBOLLER (NEFES ALMA) --- */
+        @keyframes breathingGlow {
+            0%, 100% {
+                opacity: 0.15;
+                text-shadow: 0 0 5px currentColor;
+            }
+            50% {
+                opacity: 0.7;
+                text-shadow: 0 0 20px currentColor, 0 0 30px currentColor;
+            }
+        }
+
+        body::before, body::after {
+            position: fixed;
+            z-index: -1;
+            font-weight: bold;
+            animation: breathingGlow 4s infinite ease-in-out;
+        }
+
+        /* Sol üst semboller */
+        body::before {
+            content: '\u03A3 \u222B \u03C0 \u221E';
+            top: 10%;
+            left: 5%;
+            font-size: 2.5em;
+            color: var(--main-neon);
+            animation-duration: 5s;
+        }
+
+        /* Sağ alt semboller */
+        body::after {
+            content: '\u03B1 \u03B2 \u2248 \u00B1 \u2202';
+            bottom: 10%;
+            right: 8%;
+            font-size: 2em;
+            color: var(--secondary-neon);
+            animation-duration: 3.5s;
+        }
+
+        /* --- OYUN ARAYÜZÜ --- */
+        .game-container {
+            width: 100%;
+            max-width: 600px;
+            background-color: rgba(16, 24, 48, 0.85);
+            border: 2px solid var(--main-neon);
+            border-radius: 4px; 
+            box-shadow: 0 0 20px var(--main-neon), inset 0 0 10px var(--main-neon);
+            padding: 25px;
+            text-align: center;
+            backdrop-filter: blur(3px); 
+        }
+
+        h2 {
+            color: var(--accent-neon);
+            text-shadow: 0 0 10px var(--accent-neon);
+            border-bottom: 1px solid var(--main-neon);
+            padding-bottom: 10px;
+            text-transform: uppercase; 
+        }
+
+        /* --- HİKAYE ALANI --- */
+        .story-box {
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px dashed var(--secondary-neon);
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        #story-text {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        #data-set {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--danger-neon);
+            margin-top: 10px;
+            text-align: center;
+            text-shadow: 0 0 8px var(--danger-neon);
+        }
+
+        /* --- FORMÜL TAHTASI --- */
+        .formula-board {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 25px 0;
+            font-size: 2.5em;
+            font-weight: bold;
+            color: var(--accent-neon);
+            text-shadow: 0 0 5px var(--accent-neon);
+        }
+
+        .formula-label {
+            margin-right: 15px;
+        }
+
+        .fraction {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .fraction-line {
+            width: 150px;
+            height: 3px;
+            background-color: var(--accent-neon);
+            box-shadow: 0 0 5px var(--accent-neon);
+            margin: 5px 0;
+        }
+
+        /* V.T ve V.S Giriş Kutuları */
+        .formula-input {
+            width: 140px;
+            height: 50px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1em;
+            text-align: center;
+            background-color: #000;
+            color: var(--font-color);
+            border: 2px solid var(--secondary-neon);
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        .formula-input:focus {
+            border-color: var(--accent-neon);
+            box-shadow: 0 0 15px var(--accent-neon);
+            outline: none;
+        }
+        #input-vt {
+            cursor: pointer;
+            background-color: #111;
+        }
+        #input-vt::placeholder {
+            font-size: 0.6em;
+            color: #777;
+        }
+
+        /* --- BUTONLAR --- */
+        #calculate-btn, #new-game-btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+            font-family: 'Roboto Mono', monospace;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        #calculate-btn {
+            display: none;
+            background-color: var(--success-neon);
+            color: var(--dark-bg);
+            border: none;
+            box-shadow: 0 0 15px var(--success-neon);
+            margin-top: 10px;
+        }
+        #calculate-btn:hover {
+            background-color: var(--dark-bg);
+            color: var(--success-neon);
+            border: 2px solid var(--success-neon);
+        }
+
+        #new-game-btn {
+            background-color: transparent;
+            color: var(--main-neon);
+            border: 2px solid var(--main-neon);
+            margin-top: 20px;
+        }
+        #new-game-btn:hover {
+            background-color: var(--main-neon);
+            color: var(--dark-bg);
+            box-shadow: 0 0 15px var(--main-neon);
+        }
+
+        /* --- V.T HESAP MAKİNESİ (Panel) --- */
+        .calculator-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: var(--dark-bg);
+            border: 2px solid var(--secondary-neon);
+            box-shadow: 0 0 30px var(--secondary-neon);
+            border-radius: 6px;
+            z-index: 1000;
+            width: 300px;
+            padding-bottom: 15px; /* Alt kısım için boşluk */
+        }
+        
+        /* YENİ: Panel içindeki veri seti alanı */
+        #calc-data-set {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            margin: 10px 15px;
+            border: 1px dashed var(--danger-neon);
+            font-size: 1em;
+            color: var(--danger-neon);
+            text-shadow: 0 0 3px var(--danger-neon);
+        }
+        
+        .calc-header {
+            background-color: #111;
+            padding: 10px;
+            font-weight: bold;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            color: var(--secondary-neon);
+        }
+        #calc-display {
+            width: calc(100% - 20px);
+            margin: 10px;
+            padding: 15px 10px;
+            font-size: 1.5em;
+            font-family: 'Roboto Mono', monospace;
+            text-align: right;
+            background-color: #000;
+            color: var(--font-color);
+            border: 1px solid var(--secondary-neon);
+            border-radius: 4px;
+        }
+        .calc-keys {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 0 15px 0; /* Padding kaldırıldı */
+        }
+        .calc-keys button {
+            padding: 20px;
+            font-size: 1.2em;
+            font-family: 'Roboto Mono', monospace;
+            border: 1px solid var(--secondary-neon);
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: var(--secondary-neon);
+            transition: all 0.2s;
+        }
+        .calc-keys button:hover {
+            background-color: var(--secondary-neon);
+            color: var(--dark-bg);
+            box-shadow: 0 0 10px var(--secondary-neon);
+        }
+        .calc-keys .key-op {
+            color: var(--accent-neon);
+            border-color: var(--accent-neon);
+        }
+        .calc-keys .key-op:hover {
+            background-color: var(--accent-neon);
+            color: var(--dark-bg);
+        }
+        .key-confirm {
+            grid-column: span 3;
+            background-color: var(--main-neon);
+            color: var(--dark-bg);
+            border: none;
+        }
+        .key-confirm:hover {
+            background-color: var(--accent-neon);
+            border-color: var(--accent-neon);
+            box-shadow: 0 0 15px var(--accent-neon);
+        }
+
+        /* --- GERİ BİLDİRİM VE YENİ GÖREV --- */
+        #feedback-area {
+            margin-top: 20px;
+            font-size: 1.1em;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 4px;
+            text-shadow: 0 0 5px currentColor;
+        }
+        .feedback-correct {
+            background-color: rgba(51, 204, 255, 0.1);
+            color: var(--success-neon);
+            border: 1px solid var(--success-neon);
+        }
+        .feedback-wrong {
+            background-color: rgba(255, 50, 50, 0.1);
+            color: var(--danger-neon);
+            border: 1px solid var(--danger-neon);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <h2>Aritmetik Ortalama Macerası</h2>
+
+        <div class="story-box">
+            <p id="story-text">Yükleniyor...</p>
+            <div id="data-set">[...]</div>
+        </div>
+
+        <div class="formula-board">
+            <span class="formula-label">A.O =</span>
+            <div class="fraction">
+                <input type="text" id="input-vt" class="formula-input" placeholder="V.T'yi Hesapla" readonly>
+                <div class="fraction-line"></div>
+                <input type="number" id="input-vs" class="formula-input" placeholder="V.S'yi Gir">
+            </div>
+        </div>
+
+        <button id="calculate-btn">Hesapla</button>
+
+        <div id="feedback-area"></div>
+
+        <button id="new-game-btn">Yeni Görev</button>
+    </div>
+
+    <div class="calculator-popup" id="calculator">
+        <div class="calc-header">Verilerin Toplamı (V.T) Hesaplayıcı</div>
+        
+        <div id="calc-data-set"></div>
+
+        <input type="text" id="calc-display" readonly>
+        <div class="calc-keys">
+            <button onclick="appendToDisplay('7')">7</button>
+            <button onclick="appendToDisplay('8')">8</button>
+            <button onclick="appendToDisplay('9')">9</button>
+            <button onclick="appendToDisplay('4')">4</button>
+            <button onclick="appendToDisplay('5')">5</button>
+            <button onclick="appendToDisplay('6')">6</button>
+            <button onclick="appendToDisplay('1')">1</button>
+            <button onclick="appendToDisplay('2')">2</button>
+            <button onclick="appendToDisplay('3')">3</button>
+            <button class="key-op" onclick="appendToDisplay('+')">+</button>
+            <button onclick="appendToDisplay('0')">0</button>
+            <button class="key-op" onclick="clearDisplay()">Sil</button>
+            <button class="key-confirm" onclick="confirmVT()">Onayla</button>
+        </div>
+    </div>
+
+    <script>
+        // --- OYUN VERİLERİ ---
+        const gameData = [
+            {
+                story: "Sincap Çıtçıt, 5 gün boyunca kış için ceviz topladı. Günlük topladığı ceviz sayıları:",
+                data: [12, 10, 15, 8, 20]
+            },
+            {
+                story: "Basketbolcu Efe, son 4 maçta şu sayıları attı:",
+                data: [22, 18, 25, 19]
+            },
+            {
+                story: "Bir haftalık (7 gün) hava sıcaklıkları (°C) şöyle ölçüldü:",
+                data: [24, 26, 23, 25, 22, 27, 26]
+            },
+            {
+                story: "Bir öğrenci 3 gün boyunca şu sayfalarda kitap okudu:",
+                data: [45, 60, 51]
+            }
+        ];
+
+        let currentProblem = {};
+
+        // --- HTML ELEMENTLERİNİ SEÇME ---
+        const storyText = document.getElementById('story-text');
+        const dataSetText = document.getElementById('data-set');
+        const inputVT = document.getElementById('input-vt');
+        const inputVS = document.getElementById('input-vs');
+        const calculateBtn = document.getElementById('calculate-btn');
+        const feedbackArea = document.getElementById('feedback-area');
+        const newGameBtn = document.getElementById('new-game-btn');
+        const calculator = document.getElementById('calculator');
+        const calcDisplay = document.getElementById('calc-display');
+        const calcDataSet = document.getElementById('calc-data-set'); // YENİ ELEMENT
+
+        // --- HESAPLAMA FONKSİYONLARI ---
+        function showCalculator() {
+            // Panel açılırken veri setini içine yerleştir
+            calcDataSet.innerText = dataSetText.innerText;
+            
+            calculator.style.display = 'block';
+            calcDisplay.value = '';
+        }
+
+        function appendToDisplay(value) {
+            calcDisplay.value += value;
+        }
+
+        function clearDisplay() {
+            calcDisplay.value = '';
+        }
+
+        function confirmVT() {
+            try {
+                const calculationString = calcDisplay.value.replace(/[^0-9+]/g, '');
+                const result = eval(calculationString);
+                
+                if (isNaN(result) || calculationString.length === 0) {
+                    inputVT.value = ''; 
+                } else {
+                    inputVT.value = result;
+                }
+            } catch (error) {
+                inputVT.value = ''; 
+            }
+            calculator.style.display = 'none';
+            checkInputs();
+        }
+
+        // --- OYUN MANTIĞI ---
+        function startNewGame() {
+            const randomIndex = Math.floor(Math.random() * gameData.length);
+            const problem = gameData[randomIndex];
+            
+            const correctVT = problem.data.reduce((sum, current) => sum + current, 0);
+            const correctVS = problem.data.length;
+            
+            currentProblem = {
+                ...problem,
+                correctVT: correctVT,
+                correctVS: correctVS,
+                correctAO: correctVT / correctVS
+            };
+
+            storyText.innerText = problem.story;
+            dataSetText.innerText = `[ ${problem.data.join(', ')} ]`;
+            
+            inputVT.value = '';
+            inputVS.value = '';
+            feedbackArea.innerHTML = '';
+            feedbackArea.className = '';
+            calculateBtn.style.display = 'none';
+        }
+
+        function checkInputs() {
+            if (inputVT.value && inputVS.value && parseFloat(inputVS.value) > 0) {
+                calculateBtn.style.display = 'block';
+            } else {
+                calculateBtn.style.display = 'none';
+            }
+        }
+
+        function checkAnswer() {
+            const userVT = parseFloat(inputVT.value);
+            const userVS = parseFloat(inputVS.value);
+            const correctAO = currentProblem.correctAO;
+
+            if (userVT === currentProblem.correctVT && userVS === currentProblem.correctVS) {
+                feedbackArea.className = 'feedback-correct';
+                feedbackArea.innerHTML = `🎉 TEBRİKLER! Ortalama başarıyla hesaplandı: **A.O = ${correctAO}**`;
+            } else if (userVT !== currentProblem.correctVT) {
+                feedbackArea.className = 'feedback-wrong';
+                feedbackArea.innerHTML = `⚠️ HATA: **Verilerin Toplamı (V.T)** yanlış girildi. Veri setindeki tüm sayıları tekrar topla ve panelden onayla.`;
+            } else if (userVS !== currentProblem.correctVS) {
+                feedbackArea.className = 'feedback-wrong';
+                feedbackArea.innerHTML = `⚠️ HATA: **Veri Sayısı (V.S)** yanlış girildi. Hikayede kaç tane veri (sayı) olduğunu doğru saydığından emin ol.`;
+            }
+        }
+
+        // --- OLAY DİNLEYİCİLER (EVENT LISTENERS) ---
+        inputVT.addEventListener('click', showCalculator);
+        inputVS.addEventListener('input', checkInputs);
+        calculateBtn.addEventListener('click', checkAnswer);
+        newGameBtn.addEventListener('click', startNewGame);
+
+        // Sayfa ilk yüklendiğinde oyunu başlat
+        startNewGame();
+    </script>
+</body>
+</html>
