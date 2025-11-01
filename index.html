@@ -1,13 +1,768 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="tr">
 <head>
-  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
-  <title>Hello, World!</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aritmetik Ortalama Macerası: SİBERPUNK VERSİYON</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- SİBERPUNK TEMELİ --- */
+        
+        /* CSS Değişkenleri (Açık Mavi Renk Paleti) */
+        :root {
+            --dark-bg: #0a0a1a;       /* Çok koyu lacivert/siyah */
+            --main-neon: #33ccff;    /* Ana Neon: Açık Mavi */
+            --secondary-neon: #00ffcc; /* İkincil Neon: Siyan/Turkuaz */
+            --accent-neon: #f7ff00;   /* Vurgu Neonu: Sarı */
+            --danger-neon: #ff3333;   /* Hata Neonu: Kırmızı */
+            --success-neon: #33ccff;  /* Başarı Neonu: Açık Mavi */
+            --font-color: #33ccff;   /* Ana yazı rengi: Açık Mavi */
+        }
+
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background-color: var(--dark-bg);
+            color: var(--font-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow: auto; /* İçerik taşarsa kaydırma çubuğu çıksın */
+        }
+
+        /* --- YANIP SÖNEN MATEMATİKSEL SEMBOLLER (NEFES ALMA) --- */
+        @keyframes breathingGlow {
+            0%, 100% {
+                opacity: 0.15;
+                text-shadow: 0 0 5px currentColor;
+            }
+            50% {
+                opacity: 0.7;
+                text-shadow: 0 0 20px currentColor, 0 0 30px currentColor;
+            }
+        }
+
+        body::before, body::after {
+            position: fixed;
+            z-index: -1;
+            font-weight: bold;
+            animation: breathingGlow 4s infinite ease-in-out;
+        }
+
+        /* Sol üst semboller */
+        body::before {
+            content: '\u03A3 \u222B \u03C0 \u221E';
+            top: 10%;
+            left: 5%;
+            font-size: 2.5em;
+            color: var(--main-neon);
+            animation-duration: 5s;
+        }
+
+        /* Sağ alt semboller */
+        body::after {
+            content: '\u03B1 \u03B2 \u2248 \u00B1 \u2202';
+            bottom: 10%;
+            right: 8%;
+            font-size: 2em;
+            color: var(--secondary-neon);
+            animation-duration: 3.5s;
+        }
+
+        /* --- OYUN ARAYÜZÜ --- */
+        .game-container {
+            width: 100%;
+            max-width: 600px;
+            background-color: rgba(16, 24, 48, 0.85);
+            border: 2px solid var(--main-neon);
+            border-radius: 4px; 
+            box-shadow: 0 0 20px var(--main-neon), inset 0 0 10px var(--main-neon);
+            padding: 25px;
+            text-align: center;
+            backdrop-filter: blur(3px); 
+        }
+
+        h2 {
+            color: var(--accent-neon);
+            text-shadow: 0 0 10px var(--accent-neon);
+            border-bottom: 1px solid var(--main-neon);
+            padding-bottom: 10px;
+            text-transform: uppercase; 
+        }
+
+        /* --- HİKAYE ALANI --- */
+        .story-box {
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px dashed var(--secondary-neon);
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: left;
+            min-height: 100px; /* Hikaye kutusunun minimum yüksekliği */
+        }
+        #story-text {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        #data-set {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--danger-neon);
+            margin-top: 10px;
+            text-align: center;
+            text-shadow: 0 0 8px var(--danger-neon);
+        }
+
+        /* --- FORMÜL TAHTASI --- */
+        .formula-section {
+            margin-bottom: 25px;
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+            padding: 15px 5px;
+        }
+        
+        .formula-title {
+            color: var(--secondary-neon);
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .formula-board {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+            font-size: 2.5em;
+            font-weight: bold;
+            color: var(--accent-neon);
+            text-shadow: 0 0 5px var(--accent-neon);
+        }
+        
+        /* Yeni formül satırları */
+        .formula-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+            font-size: 1.4em;
+            font-weight: bold;
+            color: var(--secondary-neon);
+            text-shadow: 0 0 3px var(--secondary-neon);
+        }
+        .formula-row span {
+            margin: 0 10px;
+        }
+
+
+        .formula-label {
+            margin-right: 15px;
+        }
+
+        .fraction {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .fraction-line {
+            width: 150px;
+            height: 3px;
+            background-color: var(--accent-neon);
+            box-shadow: 0 0 5px var(--accent-neon);
+            margin: 5px 0;
+        }
+
+        /* V.T ve V.S Giriş Kutuları */
+        .formula-input {
+            width: 140px;
+            height: 40px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1em;
+            text-align: center;
+            background-color: #000;
+            color: var(--font-color);
+            border: 2px solid var(--secondary-neon);
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        .formula-input:focus {
+            border-color: var(--accent-neon);
+            box-shadow: 0 0 15px var(--accent-neon);
+            outline: none;
+        }
+        .formula-input[type="text"] {
+            cursor: pointer;
+            background-color: #111;
+        }
+        .formula-input::placeholder {
+            font-size: 0.6em;
+            color: #777;
+        }
+
+        /* --- BUTONLAR --- */
+        #calculate-btn, #new-game-btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+            font-family: 'Roboto Mono', monospace;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        #calculate-btn {
+            display: none;
+            background-color: var(--success-neon);
+            color: var(--dark-bg);
+            border: none;
+            box-shadow: 0 0 15px var(--success-neon);
+            margin-top: 10px;
+        }
+        #calculate-btn:hover {
+            background-color: var(--dark-bg);
+            color: var(--success-neon);
+            border: 2px solid var(--success-neon);
+        }
+
+        #new-game-btn {
+            background-color: transparent;
+            color: var(--main-neon);
+            border: 2px solid var(--main-neon);
+            margin-top: 20px;
+        }
+        #new-game-btn:hover {
+            background-color: var(--main-neon);
+            color: var(--dark-bg);
+            box-shadow: 0 0 15px var(--main-neon);
+        }
+
+        /* --- HESAP MAKİNESİ (Panel) --- */
+        .calculator-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: var(--dark-bg);
+            border: 2px solid var(--secondary-neon);
+            box-shadow: 0 0 30px var(--secondary-neon);
+            border-radius: 6px;
+            z-index: 1000;
+            width: 340px; /* Panel genişletildi */
+            padding-bottom: 15px;
+        }
+        
+        #calc-data-set {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            margin: 10px 15px;
+            border: 1px dashed var(--danger-neon);
+            font-size: 1em;
+            color: var(--danger-neon);
+            text-shadow: 0 0 3px var(--danger-neon);
+            max-height: 100px;
+            overflow-y: auto; /* Çok veri varsa kaydırma çubuğu çıksın */
+        }
+        
+        .calc-header {
+            background-color: #111;
+            padding: 10px;
+            font-weight: bold;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            color: var(--secondary-neon);
+        }
+        #calc-display {
+            width: calc(100% - 20px);
+            margin: 10px;
+            padding: 15px 10px;
+            font-size: 1.5em;
+            font-family: 'Roboto Mono', monospace;
+            text-align: right;
+            background-color: #000;
+            color: var(--font-color);
+            border: 1px solid var(--secondary-neon);
+            border-radius: 4px;
+        }
+        .calc-keys {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 4 sütunlu ızgara */
+            gap: 10px;
+            padding: 0 15px 0;
+        }
+        .calc-keys button {
+            padding: 20px;
+            font-size: 1.2em;
+            font-family: 'Roboto Mono', monospace;
+            border: 1px solid var(--secondary-neon);
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: var(--secondary-neon);
+            transition: all 0.2s;
+        }
+        .calc-keys button:hover {
+            background-color: var(--secondary-neon);
+            color: var(--dark-bg);
+            box-shadow: 0 0 10px var(--secondary-neon);
+        }
+        .calc-keys .key-op {
+            color: var(--accent-neon);
+            border-color: var(--accent-neon);
+        }
+        .calc-keys .key-op:hover {
+            background-color: var(--accent-neon);
+            color: var(--dark-bg);
+        }
+        .key-confirm {
+            grid-column: span 4; /* Onayla butonu 4 sütunu da kaplayacak */
+            background-color: var(--main-neon);
+            color: var(--dark-bg);
+            border: none;
+        }
+        .key-confirm:hover {
+            background-color: var(--accent-neon);
+            border-color: var(--accent-neon);
+            box-shadow: 0 0 15px var(--accent-neon);
+        }
+
+        /* --- GERİ BİLDİRİM VE YENİ GÖREV --- */
+        #feedback-area {
+            margin-top: 20px;
+            font-size: 1.1em;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 4px;
+            text-shadow: 0 0 5px currentColor;
+        }
+        .feedback-correct {
+            background-color: rgba(51, 204, 255, 0.1);
+            color: var(--success-neon);
+            border: 1px solid var(--success-neon);
+        }
+        .feedback-wrong {
+            background-color: rgba(255, 50, 50, 0.1);
+            color: var(--danger-neon);
+            border: 1px solid var(--danger-neon);
+        }
+    </style>
 </head>
 <body>
-  <h1>
-    Hello, World!
-  </h1>
+
+    <div class="game-container">
+        <h2>Aritmetik Ortalama Macerası</h2>
+
+        <div class="story-box">
+            <p id="story-text">Yükleniyor...</p>
+            <div id="data-set"></div> 
+        </div>
+
+        <div class="formula-section">
+            <div class="formula-title">Temel A.O. Hesaplama</div>
+            <div class="formula-board">
+                <span class="formula-label">A.O =</span>
+                <div class="fraction">
+                    <input type="text" id="input-vt" class="formula-input" placeholder="V.T'yi Hesapla" readonly>
+                    <div class="fraction-line"></div>
+                    <input type="number" id="input-vs" class="formula-input" placeholder="V.S'yi Gir">
+                </div>
+            </div>
+        </div>
+
+        <div class="formula-section">
+             <div class="formula-title">Ters Hesaplama (Kayıp Veri)</div>
+            
+            <div class="formula-row">
+                <input type="text" id="input-vt-calc" class="formula-input" placeholder="V.T Girişi" readonly>
+                <span>=</span>
+                <input type="text" id="input-ao-vt" class="formula-input" placeholder="A.O Girişi" readonly>
+                <span>x</span>
+                <input type="number" id="input-vs-vt" class="formula-input" placeholder="V.S Girişi">
+            </div>
+            
+            <div class="formula-row">
+                <input type="number" id="input-vs-calc" class="formula-input" placeholder="V.S Girişi">
+                <span>=</span>
+                <input type="text" id="input-vt-vs" class="formula-input" placeholder="V.T Girişi" readonly>
+                <span>/</span>
+                <input type="number" id="input-ao-vs" class="formula-input" placeholder="A.O Girişi">
+            </div>
+        </div>
+
+
+        <button id="calculate-btn">Hesapla</button>
+
+        <div id="feedback-area"></div>
+
+        <button id="new-game-btn">Yeni Görev</button>
+    </div>
+
+    <div class="calculator-popup" id="calculator">
+        <div class="calc-header">Hesaplayıcı (V.T. ve Diğer İşlemler)</div>
+        
+        <div id="calc-data-set"></div>
+
+        <input type="text" id="calc-display" readonly>
+        <div class="calc-keys">
+            <button class="key-op" onclick="appendToDisplay('+')">+</button>
+            <button class="key-op" onclick="appendToDisplay('-')">-</button>
+            <button class="key-op" onclick="appendToDisplay('*')">x</button>
+            <button class="key-op" onclick="appendToDisplay('/')">÷</button>
+
+            <button onclick="appendToDisplay('7')">7</button>
+            <button onclick="appendToDisplay('8')">8</button>
+            <button onclick="appendToDisplay('9')">9</button>
+            <button onclick="appendToDisplay('(')">(</button>
+            
+            <button onclick="appendToDisplay('4')">4</button>
+            <button onclick="appendToDisplay('5')">5</button>
+            <button onclick="appendToDisplay('6')">6</button>
+            <button onclick="appendToDisplay(')')">)</button>
+            
+            <button onclick="appendToDisplay('1')">1</button>
+            <button onclick="appendToDisplay('2')">2</button>
+            <button onclick="appendToDisplay('3')">3</button>
+            <button onclick="appendToDisplay('.')">.</button>
+            
+            <button class="key-op" onclick="clearDisplay()">Sil</button>
+            <button onclick="appendToDisplay('0')">0</button>
+            <button class="key-op" onclick="calculateResult()">=</button>
+            <button class="key-op" onclick="clearAll()">C</button>
+            
+            <button class="key-confirm" onclick="confirmVT()">Sonucu Girişe Yansıt</button>
+        </div>
+    </div>
+
+    <script>
+        // --- OYUN VERİLERİ ---
+        const gameData = [
+             // Tip 1: Klasik A.O. Hesaplama (3 Senaryo)
+            {
+                type: 1,
+                story: "Sincap Çıtçıt, 5 gün boyunca kış için ceviz topladı. Günlük topladığı ceviz sayıları:",
+                data: [12, 10, 15, 8, 20],
+                answerType: 'AO'
+            },
+            {
+                type: 1,
+                story: "Basketbolcu Efe, son 4 maçta şu sayıları attı:",
+                data: [22, 18, 25, 19],
+                answerType: 'AO'
+            },
+            {
+                type: 1,
+                story: "Bir haftalık (7 gün) hava sıcaklıkları (°C) şöyle ölçüldü:",
+                data: [24, 26, 23, 25, 22, 27, 26],
+                answerType: 'AO'
+            },
+            // Tip 2: Kayıp Veri Bulma (V.T. = A.O x V.S. ile Kayıp Değer Bulma) - 2 Senaryo
+            {
+                type: 2,
+                // Kayıp kişi yaş: (5 * 24) - (4 * 20) = 120 - 80 = 40
+                story: "4 kişilik turist kafilesinin yaş ortalaması **20**'dir. Gruba sonradan bir kişi daha katıldı ve grubun yeni yaş ortalaması **24** oldu. Son katılan kişi kaç yaşındadır?",
+                formulaNeeded: 'VT',
+                data: {
+                    vt1: 4 * 20, // İlk grubun V.T'si
+                    vs1: 4,      // İlk grubun V.S'si
+                    ao2: 24,     // Yeni grubun A.O'su
+                    vs2: 5       // Yeni grubun V.S'si
+                },
+                question: 'Son katılan kişinin yaşını',
+                correctAO: 40 
+            },
+            {
+                type: 2,
+                // Yanlış okunan not: (5 * 80) - (4 * 70) = 400 - 280 = 120
+                story: "5 kişilik arkadaş grubunun matematikten son yazılıdan aldıkları notların ortalaması **80**'dir. Bu gruptan birinin yazılı kağıdının yanlış okunduğu anlaşıldı ve **kalan 4** öğrencinin ortalamasının **70** olduğu görüldü. Buna göre, kağıdı yanlış okunan öğrencinin notu kaç olmalıdır?",
+                formulaNeeded: 'VT',
+                data: {
+                    vt1: 5 * 80, // İlk grubun V.T'si
+                    vs1: 5,
+                    ao2: 70, // Kalanların A.O'su
+                    vs2: 4   // Kalanların V.S'si
+                },
+                question: 'Kağıdı yanlış okunan öğrencinin notunu',
+                correctAO: 120
+            },
+             // Tip 2: Kayıp Veri Bulma (V.S. = V.T. / A.O. ile Veri Sayısı Bulma) - YENİ 4 Senaryo
+            {
+                type: 2,
+                // İşçi sayısı: 5000 / 100 = 50
+                story: "Bir fabrikadaki işçilerin günlük ortalama üretimi **100** birimdir. Fabrikadaki toplam üretim **5000** birim olduğuna göre, fabrikada kaç işçi (V.S.) çalışmaktadır?",
+                formulaNeeded: 'VS',
+                data: {
+                    vt: 5000,
+                    ao: 100
+                },
+                question: 'Çalışan işçi sayısını (V.S.)',
+                correctAO: 50 
+            },
+            {
+                type: 2,
+                // Okunan Gün Sayısı: 350 / 70 = 5
+                story: "Bir öğrencinin birkaç günde okuduğu toplam sayfa sayısı **350**'dir. Bu öğrencinin günlük okuduğu ortalama sayfa sayısı **70** sayfa ise, öğrenci kaç gün (V.S.) kitap okumuştur?",
+                formulaNeeded: 'VS',
+                data: {
+                    vt: 350,
+                    ao: 70
+                },
+                question: 'Kitap okuduğu gün sayısını (V.S.)',
+                correctAO: 5 
+            },
+            {
+                type: 2,
+                // Maç Sayısı: 100 / 25 = 4
+                story: "Bir futbolcunun attığı toplam gol sayısı **100**'dür. Maç başına düşen ortalama gol sayısı **25** olduğuna göre, futbolcu kaç maç (V.S.) oynamıştır?",
+                formulaNeeded: 'VS',
+                data: {
+                    vt: 100,
+                    ao: 25
+                },
+                question: 'Oynadığı maç sayısını (V.S.)',
+                correctAO: 4 
+            },
+            {
+                type: 2,
+                // Günlük Satış Adedi: 1200 / 60 = 20
+                story: "Bir mağazanın bir ayda sattığı toplam tişört sayısı **1200** adettir. Mağazanın günlük ortalama tişört satışı **60** adet olduğuna göre, kaç gün (V.S.) satış yapmıştır? (1 ay 30 gün kabul edin.)",
+                formulaNeeded: 'VS',
+                data: {
+                    vt: 1200,
+                    ao: 60
+                },
+                question: 'Satış yaptığı gün sayısını (V.S.)',
+                correctAO: 20 
+            }
+        ];
+
+        let currentProblem = {};
+        let activeInputId = null; // Hangi inputun hesap makinesini açtığını takip eder
+
+        // --- HTML ELEMENTLERİNİ SEÇME ---
+        const storyText = document.getElementById('story-text');
+        const dataSetText = document.getElementById('data-set');
+        
+        // Tip 1 alanları
+        const inputVT = document.getElementById('input-vt');
+        const inputVS = document.getElementById('input-vs');
+        
+        // Tip 2 alanları (V.T. = A.O x V.S)
+        const inputVTCalc = document.getElementById('input-vt-calc');
+        const inputAOVt = document.getElementById('input-ao-vt');
+        const inputVSVt = document.getElementById('input-vs-vt');
+        
+        // Tip 2 alanları (V.S. = V.T / A.O)
+        const inputVSCalc = document.getElementById('input-vs-calc');
+        const inputVTVs = document.getElementById('input-vt-vs');
+        const inputAOVB = document.getElementById('input-ao-vs'); 
+
+        const formulaSection1 = document.querySelector('.formula-section:nth-child(2)');
+        const formulaSection2 = document.querySelector('.formula-section:nth-child(3)');
+
+        const calculateBtn = document.getElementById('calculate-btn');
+        const feedbackArea = document.getElementById('feedback-area');
+        const newGameBtn = document.getElementById('new-game-btn');
+        const calculator = document.getElementById('calculator');
+        const calcDisplay = document.getElementById('calc-display');
+        const calcDataSet = document.getElementById('calc-data-set');
+
+        // --- HESAPLAMA FONKSİYONLARI ---
+        function showCalculator(inputId, showData = false) {
+            activeInputId = inputId;
+            calcDisplay.value = '';
+            
+            // Veri seti gösterimini yönet
+            if (showData && currentProblem.data && Array.isArray(currentProblem.data)) {
+                calcDataSet.innerText = `Veri Seti: [ ${currentProblem.data.join(', ')} ]`;
+                calcDataSet.style.display = 'block';
+            } else {
+                calcDataSet.style.display = 'none';
+            }
+            
+            calculator.style.display = 'block';
+        }
+        
+        // Tip 1 VT Girişi için
+        inputVT.addEventListener('click', () => showCalculator('input-vt', true));
+        // Tip 2 VT Girişi için
+        inputVTCalc.addEventListener('click', () => showCalculator('input-vt-calc', false));
+        // Tip 2 AO (V.T. = AO x VS) Girişi için
+        inputAOVt.addEventListener('click', () => showCalculator('input-ao-vt', false));
+        // Tip 2 V.T. (V.S. = V.T / AO) Girişi için
+        inputVTVs.addEventListener('click', () => showCalculator('input-vt-vs', false));
+        
+        
+        function appendToDisplay(value) {
+            // Çift operatör girmeyi engelle (örneğin ++ veya *+)
+            const lastChar = calcDisplay.value.slice(-1);
+            if (['+', '-', '*', '/'].includes(value) && ['+', '-', '*', '/'].includes(lastChar)) {
+                calcDisplay.value = calcDisplay.value.slice(0, -1) + value; // Eski operatörü yeniyle değiştir
+            } else {
+                calcDisplay.value += value;
+            }
+        }
+
+        function clearDisplay() {
+            calcDisplay.value = calcDisplay.value.slice(0, -1); // Son karakteri sil
+        }
+        
+        function clearAll() {
+            calcDisplay.value = ''; // Tümünü temizle
+        }
+        
+        function calculateResult() {
+            try {
+                // Güvenli hesaplama için eval kullanmadan önce parantez, sayı ve operatör kontrolü yap
+                const result = new Function('return ' + calcDisplay.value.replace(/x/g, '*').replace(/÷/g, '/'))(); // x ve ÷ işaretlerini JS operatörlerine dönüştür
+                calcDisplay.value = result;
+            } catch (error) {
+                calcDisplay.value = 'HATA';
+            }
+        }
+
+        function confirmVT() {
+            calculateResult(); // Onaylamadan önce sonucu hesapla
+
+            const targetInput = document.getElementById(activeInputId);
+            
+            if (targetInput && calcDisplay.value !== 'HATA') {
+                targetInput.value = calcDisplay.value;
+            }
+            calculator.style.display = 'none';
+            checkInputs();
+        }
+
+        // --- OYUN MANTIĞI ---
+        function startNewGame() {
+            // Rastgele bir problem seç
+            const randomIndex = Math.floor(Math.random() * gameData.length);
+            const problem = gameData[randomIndex];
+            currentProblem = problem;
+
+            // Alanları temizle ve başlangıç durumuna getir
+            storyText.innerText = problem.story;
+            feedbackArea.innerHTML = '';
+            feedbackArea.className = '';
+            calculateBtn.style.display = 'none';
+
+            // Tüm inputları temizle
+            document.querySelectorAll('.formula-input').forEach(input => input.value = '');
+            
+            // Senaryo tipine göre formül panellerini göster/gizle
+            if (problem.type === 1) {
+                // Tip 1: Klasik A.O.
+                formulaSection1.style.display = 'block';
+                formulaSection2.style.display = 'none';
+                dataSetText.innerText = `[ ${problem.data.join(', ')} ]`;
+            } else {
+                // Tip 2: Kayıp Veri Bulma
+                formulaSection1.style.display = 'none';
+                formulaSection2.style.display = 'block';
+                dataSetText.innerText = ''; // Veri seti bu sorularda gösterilmez
+                
+                // Formül ipuçları
+                inputVTCalc.placeholder = problem.formulaNeeded === 'VT' ? 'İhtiyacın olan V.T.' : 'V.T Girişi';
+                inputVSCalc.placeholder = problem.formulaNeeded === 'VS' ? 'İhtiyacın olan V.S.' : 'V.S Girişi';
+
+                // Tip 2 Sorularında, kullanıcıdan beklenen cevap hangisiyse, o input boş bırakılır. Diğer inputlar da temizlenir.
+                // Bu senaryoda V.T. ve A.O. gibi alanların doldurulmasını BEKLEMİYORUZ, sadece sonucun doğru alana girilmesini bekliyoruz.
+                // İPUCU: Aslında buradaki inputlar, Tip 2 soruları için bir hesap makinesi işlevi görüyor.
+            }
+        }
+
+        function checkInputs() {
+            // Tip 1 kontrol
+            if (currentProblem.type === 1) {
+                if (inputVT.value && inputVS.value && parseFloat(inputVS.value) > 0) {
+                    calculateBtn.style.display = 'block';
+                    return true;
+                }
+            } 
+            // Tip 2 kontrol (V.T = A.O x V.S) - Kayıp Değer Bulma
+            else if (currentProblem.type === 2 && currentProblem.formulaNeeded === 'VT') {
+                if (inputVTCalc.value) { // Kullanıcı sonucu bu alana girmeli
+                    calculateBtn.style.display = 'block';
+                    return true;
+                }
+            } 
+            // Tip 2 kontrol (V.S = V.T / A.O) - Veri Sayısı Bulma
+            else if (currentProblem.type === 2 && currentProblem.formulaNeeded === 'VS') {
+                 if (inputVSCalc.value) { // Kullanıcı sonucu bu alana girmeli
+                    calculateBtn.style.display = 'block';
+                    return true;
+                 }
+            }
+
+            calculateBtn.style.display = 'none';
+            return false;
+        }
+
+        function checkAnswer() {
+            let userAnswer = NaN;
+            
+            // Tip 1: Klasik A.O. Kontrolü
+            if (currentProblem.type === 1) {
+                const userVT = parseFloat(inputVT.value);
+                const userVS = parseFloat(inputVS.value);
+                
+                const correctVT = currentProblem.data.reduce((sum, current) => sum + current, 0);
+                const correctVS = currentProblem.data.length;
+                const correctAO = correctVT / correctVS;
+                
+                if (Math.abs(userVT - correctVT) < 0.01 && Math.abs(userVS - correctVS) < 0.01) {
+                    feedbackArea.className = 'feedback-correct';
+                    feedbackArea.innerHTML = `🎉 TEBRİKLER! Ortalama başarıyla hesaplandı: **A.O = ${correctAO.toFixed(2)}**`;
+                } else if (Math.abs(userVT - correctVT) >= 0.01) {
+                    feedbackArea.className = 'feedback-wrong';
+                    feedbackArea.innerHTML = `⚠️ HATA: **Verilerin Toplamı (V.T)** yanlış girildi. Tekrar kontrol et.`;
+                } else if (Math.abs(userVS - correctVS) >= 0.01) {
+                    feedbackArea.className = 'feedback-wrong';
+                    feedbackArea.innerHTML = `⚠️ HATA: **Veri Sayısı (V.S)** yanlış girildi. Tekrar kontrol et.`;
+                }
+            } 
+            
+            // Tip 2: Kayıp Veri Kontrolü
+            else if (currentProblem.type === 2) {
+                if (currentProblem.formulaNeeded === 'VT') {
+                    userAnswer = parseFloat(inputVTCalc.value); // V.T. hesaplaması
+                } else if (currentProblem.formulaNeeded === 'VS') {
+                    userAnswer = parseFloat(inputVSCalc.value); // V.S. hesaplaması
+                }
+                
+                const correctFinalAnswer = currentProblem.correctAO; // Bu, kayıp değeri (V.S. veya V.T. farkı) temsil eder
+                
+                if (Math.abs(userAnswer - correctFinalAnswer) < 0.01) {
+                     feedbackArea.className = 'feedback-correct';
+                     feedbackArea.innerHTML = `🎉 TEBRİKLER! **${currentProblem.question}** doğru bulundu: **${correctFinalAnswer}**`;
+                } else {
+                     feedbackArea.className = 'feedback-wrong';
+                     feedbackArea.innerHTML = `⚠️ HATA: **${currentProblem.question}** yanlış hesaplandı. Cevabın **${correctFinalAnswer}** olması gerekiyordu. Formülleri doğru kullandığından emin ol.`;
+                }
+            }
+        }
+
+        // --- OLAY DİNLEYİCİLER (EVENT LISTENERS) ---
+        // Tip 1 VS Giriş Kontrolü
+        inputVS.addEventListener('input', checkInputs);
+        
+        // Tip 2 input kontrolü (Sadece hesap makinesi kullanılamayan inputlar)
+        inputVSVt.addEventListener('input', checkInputs);
+        inputAOVB.addEventListener('input', checkInputs);
+        inputVSCalc.addEventListener('input', checkInputs); // VS bulma sonucunun girildiği alan
+        inputVTCalc.addEventListener('input', checkInputs); // VT bulma sonucunun girildiği alan
+        
+        
+        calculateBtn.addEventListener('click', checkAnswer);
+        newGameBtn.addEventListener('click', startNewGame);
+
+        // Sayfa ilk yüklendiğinde oyunu başlat
+        startNewGame();
+    </script>
 </body>
 </html>
