@@ -109,12 +109,15 @@
             line-height: 1.6;
         }
         #data-set {
+            /* DÜZELTME: Veri setini koyu arka planda belirgin yapmak için rengi değiştirildi */
             font-size: 1.2em;
             font-weight: bold;
-            color: var(--danger-neon);
+            color: var(--accent-neon); /* Sarı Neon yapıldı */
             margin-top: 10px;
             text-align: center;
-            text-shadow: 0 0 8px var(--danger-neon);
+            text-shadow: 0 0 8px var(--accent-neon);
+            padding: 5px;
+            background-color: rgba(0, 0, 0, 0.2);
         }
 
         /* --- FORMÜL TAHTASI --- */
@@ -203,6 +206,32 @@
             color: #777;
         }
 
+        /* --- MOBİL UYUMLULUK DÜZELTMESİ --- */
+        @media (max-width: 500px) {
+            .formula-row {
+                /* Mobil cihazda, 3 input kutusu yan yana sığsın diye esnekliği artırıyoruz */
+                flex-wrap: wrap; /* Gerekirse alt satıra geçsin */
+                justify-content: space-around; /* Yatayda boşlukları dağıt */
+            }
+            .formula-row > * {
+                flex-grow: 1; /* Esneklik ver */
+                margin: 5px; /* Dikeyde de boşluk bırak */
+                min-width: 80px; /* Çok daralmasını engelle */
+            }
+            .formula-input {
+                width: 100%; /* Sığması için tam genişlik alsın */
+                max-width: 120px; /* Çok genişlemeyi engelle */
+                box-sizing: border-box;
+                height: 35px; /* Biraz küçült */
+            }
+            
+            /* Eşittir (=) ve bölü (/) işaretleri dar alanda sıkışmasın */
+            .formula-row span {
+                margin: 5px; 
+                font-size: 1em; /* Küçült */
+                align-self: center; /* Ortada hizala */
+            }
+        }
         /* --- BUTONLAR --- */
         #calculate-btn, #new-game-btn {
             width: 100%;
@@ -468,10 +497,10 @@
                 story: "4 kişilik turist kafilesinin yaş ortalaması **20**'dir. Gruba sonradan bir kişi daha katıldı ve grubun yeni yaş ortalaması **24** oldu. Son katılan kişi kaç yaşındadır?",
                 formulaNeeded: 'VT',
                 data: {
-                    vt1: 4 * 20, // İlk grubun V.T'si
-                    vs1: 4,      // İlk grubun V.S'si
-                    ao2: 24,     // Yeni grubun A.O'su
-                    vs2: 5       // Yeni grubun V.S'si
+                    vt1: 4 * 20, 
+                    vs1: 4,      
+                    ao2: 24,     
+                    vs2: 5       
                 },
                 question: 'Son katılan kişinin yaşını',
                 correctAO: 40 
@@ -482,15 +511,15 @@
                 story: "5 kişilik arkadaş grubunun matematikten son yazılıdan aldıkları notların ortalaması **80**'dir. Bu gruptan birinin yazılı kağıdının yanlış okunduğu anlaşıldı ve **kalan 4** öğrencinin ortalamasının **70** olduğu görüldü. Buna göre, kağıdı yanlış okunan öğrencinin notu kaç olmalıdır?",
                 formulaNeeded: 'VT',
                 data: {
-                    vt1: 5 * 80, // İlk grubun V.T'si
+                    vt1: 5 * 80, 
                     vs1: 5,
-                    ao2: 70, // Kalanların A.O'su
-                    vs2: 4   // Kalanların V.S'si
+                    ao2: 70, 
+                    vs2: 4   
                 },
                 question: 'Kağıdı yanlış okunan öğrencinin notunu',
                 correctAO: 120
             },
-             // Tip 2: Kayıp Veri Bulma (V.S. = V.T. / A.O. ile Veri Sayısı Bulma) - YENİ 4 Senaryo
+             // Tip 2: Kayıp Veri Bulma (V.S. = V.T. / A.O. ile Veri Sayısı Bulma) - 4 Senaryo
             {
                 type: 2,
                 // İşçi sayısı: 5000 / 100 = 50
@@ -659,20 +688,21 @@
                 // Tip 1: Klasik A.O.
                 formulaSection1.style.display = 'block';
                 formulaSection2.style.display = 'none';
+                
+                // DATA SETİNİ GÖSTER: Sadece Tip 1'de görünür
                 dataSetText.innerText = `[ ${problem.data.join(', ')} ]`;
+                
             } else {
                 // Tip 2: Kayıp Veri Bulma
                 formulaSection1.style.display = 'none';
                 formulaSection2.style.display = 'block';
-                dataSetText.innerText = ''; // Veri seti bu sorularda gösterilmez
+                
+                // DATA SETİNİ GİZLE: Tip 2'de sadece hikaye metni kullanılır
+                dataSetText.innerText = ''; 
                 
                 // Formül ipuçları
                 inputVTCalc.placeholder = problem.formulaNeeded === 'VT' ? 'İhtiyacın olan V.T.' : 'V.T Girişi';
                 inputVSCalc.placeholder = problem.formulaNeeded === 'VS' ? 'İhtiyacın olan V.S.' : 'V.S Girişi';
-
-                // Tip 2 Sorularında, kullanıcıdan beklenen cevap hangisiyse, o input boş bırakılır. Diğer inputlar da temizlenir.
-                // Bu senaryoda V.T. ve A.O. gibi alanların doldurulmasını BEKLEMİYORUZ, sadece sonucun doğru alana girilmesini bekliyoruz.
-                // İPUCU: Aslında buradaki inputlar, Tip 2 soruları için bir hesap makinesi işlevi görüyor.
             }
         }
 
@@ -766,3 +796,4 @@
     </script>
 </body>
 </html>
+
