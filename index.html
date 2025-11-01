@@ -7,17 +7,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- SİBERPUNK TEMELİ --- */
+        /* --- ZARİF SİBERPUNK TEMELİ --- */
         
-        /* CSS Değişkenleri (Açık Mavi Renk Paleti) */
+        /* CSS Değişkenleri (Daha Pastel ve İnce Mavi Paleti) */
         :root {
-            --dark-bg: #0a0a1a;       /* Çok koyu lacivert/siyah */
-            --main-neon: #33ccff;    /* Ana Neon: Açık Mavi */
-            --secondary-neon: #00ffcc; /* İkincil Neon: Siyan/Turkuaz */
-            --accent-neon: #f7ff00;   /* Vurgu Neonu: Sarı */
-            --danger-neon: #ff3333;   /* Hata Neonu: Kırmızı */
-            --success-neon: #33ccff;  /* Başarı Neonu: Açık Mavi */
-            --font-color: #33ccff;   /* Ana yazı rengi: Açık Mavi */
+            --dark-bg: #0d1226;          /* Koyu lacivert/siyah */
+            --main-neon: #89cff0;       /* Ana Neon: Pastel Açık Mavi */
+            --secondary-neon: #aaffdd;  /* İkincil Neon: Açık Mint Yeşili */
+            --accent-neon: #ffe899;      /* Vurgu Neonu: Yumuşak Sarı */
+            --danger-neon: #ff9999;      /* Hata Neonu: Soluk Kırmızı */
+            --success-neon: #89cff0;     /* Başarı Neonu: Pastel Açık Mavi */
+            --font-color: #c7d1e1;      /* Ana yazı rengi: Hafif gri-mavi */
+            --border-color: #4a5c7f;    /* Genel çerçeve rengi: Koyu gri-mavi */
         }
 
         body {
@@ -34,15 +35,15 @@
             overflow: auto; 
         }
 
-        /* --- YANIP SÖNEN MATEMATİKSEL SEMBOLLER (NEFES ALMA) --- */
+        /* --- YANIP SÖNEN MATEMATİKSEL SEMBOLLER (HAFİFLETİLMİŞ) --- */
         @keyframes breathingGlow {
             0%, 100% {
-                opacity: 0.15;
-                text-shadow: 0 0 5px currentColor;
+                opacity: 0.05; /* Daha az görünür */
+                text-shadow: none; /* Gölge yok veya çok az */
             }
             50% {
-                opacity: 0.7;
-                text-shadow: 0 0 20px currentColor, 0 0 30px currentColor;
+                opacity: 0.2; /* Hafif parlar */
+                text-shadow: 0 0 5px currentColor; /* Daha az belirgin gölge */
             }
         }
 
@@ -51,14 +52,14 @@
             z-index: -1;
             font-weight: bold;
             animation: breathingGlow 4s infinite ease-in-out;
+            font-size: 1.8em; /* Biraz küçültüldü */
         }
 
         /* Sol üst semboller */
         body::before {
             content: '\u03A3 \u222B \u03C0 \u221E';
-            top: 10%;
+            top: 8%;
             left: 5%;
-            font-size: 2.5em;
             color: var(--main-neon);
             animation-duration: 5s;
         }
@@ -66,9 +67,8 @@
         /* Sağ alt semboller */
         body::after {
             content: '\u03B1 \u03B2 \u2248 \u00B1 \u2202';
-            bottom: 10%;
+            bottom: 8%;
             right: 8%;
-            font-size: 2em;
             color: var(--secondary-neon);
             animation-duration: 3.5s;
         }
@@ -77,61 +77,64 @@
         .game-container {
             width: 100%;
             max-width: 600px;
-            background-color: rgba(16, 24, 48, 0.85);
-            border: 2px solid var(--main-neon);
-            border-radius: 4px; 
-            box-shadow: 0 0 20px var(--main-neon), inset 0 0 10px var(--main-neon);
+            background-color: rgba(16, 24, 48, 0.7); /* Biraz daha şeffaf */
+            border: 1px solid var(--border-color); /* Daha ince kenarlık */
+            border-radius: 6px; /* Hafif yuvarlak köşeler */
+            box-shadow: 0 0 10px rgba(74, 92, 127, 0.5); /* Daha zarif gölge */
             padding: 25px;
             text-align: center;
-            backdrop-filter: blur(3px); 
+            backdrop-filter: blur(2px); /* Daha az bulanıklık */
         }
 
         h2 {
             color: var(--accent-neon);
-            text-shadow: 0 0 10px var(--accent-neon);
-            border-bottom: 1px solid var(--main-neon);
+            text-shadow: 0 0 5px rgba(255, 232, 153, 0.7); /* Yumuşak gölge */
+            border-bottom: 1px solid var(--border-color); /* İnce ayırıcı çizgi */
             padding-bottom: 10px;
             text-transform: uppercase; 
+            font-size: 1.6em; /* Biraz küçültüldü */
         }
 
         /* --- HİKAYE ALANI --- */
         .story-box {
-            background-color: rgba(0, 0, 0, 0.3);
-            border: 1px dashed var(--secondary-neon);
+            background-color: rgba(0, 0, 0, 0.2); /* Daha açık arka plan */
+            border: 1px dashed rgba(170, 255, 221, 0.5); /* Daha soluk noktalı çizgi */
             border-radius: 4px;
             padding: 15px;
             margin-bottom: 20px;
             text-align: left;
             min-height: 100px; 
+            color: var(--font-color); /* Yazı rengi */
         }
         #story-text {
-            font-size: 1.1em;
+            font-size: 1em; /* Biraz küçültüldü */
             line-height: 1.6;
         }
         #data-set {
-            /* Veri setini belirgin yapmak için rengi değiştirildi */
-            font-size: 1.2em;
+            font-size: 1.1em;
             font-weight: bold;
-            color: var(--accent-neon); /* Sarı Neon yapıldı */
+            color: var(--accent-neon); 
             margin-top: 10px;
             text-align: center;
-            text-shadow: 0 0 8px var(--accent-neon);
+            text-shadow: 0 0 5px rgba(255, 232, 153, 0.7); /* Yumuşak gölge */
             padding: 5px;
-            background-color: rgba(0, 0, 0, 0.2);
+            background-color: rgba(0, 0, 0, 0.1); /* Daha az belirgin arka plan */
+            border-radius: 2px;
         }
 
         /* --- FORMÜL TAHTASI --- */
         .formula-section {
             margin-bottom: 25px;
-            border: 1px dashed rgba(255, 255, 255, 0.1);
+            border: 1px dashed rgba(255, 255, 255, 0.08); /* Daha soluk ve ince çizgi */
             padding: 15px 5px;
         }
         
         .formula-title {
             color: var(--secondary-neon);
-            font-size: 1.1em;
+            font-size: 1em; /* Biraz küçültüldü */
             margin-bottom: 10px;
             text-transform: uppercase;
+            text-shadow: 0 0 3px rgba(170, 255, 221, 0.7); /* Yumuşak gölge */
         }
 
         .formula-board {
@@ -139,122 +142,113 @@
             align-items: center;
             justify-content: center;
             margin: 15px 0;
-            font-size: 2.5em;
+            font-size: 2.2em; /* Biraz küçültüldü */
             font-weight: bold;
             color: var(--accent-neon);
-            text-shadow: 0 0 5px var(--accent-neon);
+            text-shadow: 0 0 3px rgba(255, 232, 153, 0.7); /* Yumuşak gölge */
         }
         
-        /* Yeni formül satırları */
         .formula-row {
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 10px 0;
-            font-size: 1.4em;
+            font-size: 1.2em; /* Biraz küçültüldü */
             font-weight: bold;
             color: var(--secondary-neon);
-            text-shadow: 0 0 3px var(--secondary-neon);
+            text-shadow: 0 0 2px rgba(170, 255, 221, 0.7); /* Yumuşak gölge */
         }
         .formula-row span {
-            margin: 0 10px;
+            margin: 0 8px; /* Boşluk azaltıldı */
         }
-
 
         .formula-label {
-            margin-right: 15px;
-        }
-
-        .fraction {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            margin-right: 12px;
         }
 
         .fraction-line {
-            width: 150px;
-            height: 3px;
+            width: 120px; /* Çizgi inceltildi */
+            height: 2px; /* Çizgi inceltildi */
             background-color: var(--accent-neon);
-            box-shadow: 0 0 5px var(--accent-neon);
-            margin: 5px 0;
+            box-shadow: 0 0 3px rgba(255, 232, 153, 0.7); /* Yumuşak gölge */
+            margin: 4px 0;
         }
 
         /* V.T ve V.S Giriş Kutuları */
         .formula-input {
-            width: 140px;
-            height: 40px;
+            width: 130px; /* Genişlik azaltıldı */
+            height: 38px; /* Yükseklik azaltıldı */
             font-family: 'Roboto Mono', monospace;
-            font-size: 1em;
+            font-size: 0.95em; /* Yazı boyutu azaltıldı */
             text-align: center;
-            background-color: #000;
+            background-color: #070b1a; /* Daha koyu arka plan */
             color: var(--font-color);
-            border: 2px solid var(--secondary-neon);
-            border-radius: 4px;
+            border: 1px solid var(--border-color); /* Daha ince kenarlık */
+            border-radius: 3px;
             transition: all 0.3s;
         }
         .formula-input:focus {
             border-color: var(--accent-neon);
-            box-shadow: 0 0 15px var(--accent-neon);
+            box-shadow: 0 0 8px rgba(255, 232, 153, 0.7); /* Daha zarif gölge */
             outline: none;
         }
         .formula-input[type="text"] {
             cursor: pointer;
-            background-color: #111;
+            background-color: #0c1220; /* Odaklanınca daha belirgin arka plan */
         }
         .formula-input::placeholder {
-            font-size: 0.6em;
+            font-size: 0.7em;
             color: #777;
         }
 
-        /* --- MOBİL UYUMLULUK DÜZELTMESİ (TAŞMA SORUNU) --- */
+        /* --- MOBİL UYUMLULUK --- */
         @media (max-width: 500px) {
             .formula-row {
-                /* Gerekirse alt satıra geçsin */
                 flex-wrap: wrap; 
-                /* Yatayda boşlukları dağıt */
                 justify-content: space-around; 
             }
             .formula-row > * {
-                /* Esneklik ver */
                 flex-grow: 1; 
-                /* Dikeyde de boşluk bırak */
-                margin: 5px; 
-                /* Çok daralmasını engelle */
-                min-width: 80px; 
+                margin: 4px; 
+                min-width: 70px; 
             }
             .formula-input {
-                /* Sığması için tam genişlik alsın */
                 width: 100%; 
-                /* Çok genişlemeyi engelle */
-                max-width: 120px; 
+                max-width: 100px; /* Biraz daha daraltıldı */
                 box-sizing: border-box;
-                /* Biraz küçült */
-                height: 35px; 
+                height: 32px; 
             }
             
-            /* Eşittir (=) ve bölü (/) işaretleri dar alanda sıkışmasın */
             .formula-row span {
-                margin: 5px; 
-                font-size: 1em; /* Küçült */
+                margin: 4px; 
+                font-size: 0.9em; 
                 align-self: center; 
             }
             
-            /* Hesap makinesi mobil ekranın tamamını kaplasın */
              .calculator-popup {
-                width: 90%; 
+                width: 95%; /* Mobil cihazda daha geniş yer kaplasın */
+                padding: 10px;
+            }
+            .calc-keys button {
+                padding: 15px; /* Tuşlar biraz küçültüldü */
+                font-size: 1em;
+            }
+            #calc-display {
+                font-size: 1.2em; /* Hesap makinesi ekranı küçültüldü */
             }
         }
         /* --- BUTONLAR --- */
         #calculate-btn, #new-game-btn {
             width: 100%;
-            padding: 15px;
-            font-size: 1.2em;
+            padding: 12px; /* Düğme dolgusu azaltıldı */
+            font-size: 1.1em; /* Yazı boyutu azaltıldı */
             font-weight: bold;
             font-family: 'Roboto Mono', monospace;
             text-transform: uppercase;
             border-radius: 4px;
             cursor: pointer;
             transition: all 0.3s;
+            margin-top: 15px; /* Boşluk ayarı */
         }
 
         #calculate-btn {
@@ -262,25 +256,25 @@
             background-color: var(--success-neon);
             color: var(--dark-bg);
             border: none;
-            box-shadow: 0 0 15px var(--success-neon);
+            box-shadow: 0 0 8px rgba(137, 207, 240, 0.7); /* Daha zarif gölge */
             margin-top: 10px;
         }
         #calculate-btn:hover {
             background-color: var(--dark-bg);
             color: var(--success-neon);
-            border: 2px solid var(--success-neon);
+            border: 1px solid var(--success-neon); /* İnce kenarlık */
         }
 
         #new-game-btn {
             background-color: transparent;
             color: var(--main-neon);
-            border: 2px solid var(--main-neon);
-            margin-top: 20px;
+            border: 1px solid var(--main-neon); /* İnce kenarlık */
+            margin-top: 15px; /* Boşluk ayarı */
         }
         #new-game-btn:hover {
             background-color: var(--main-neon);
             color: var(--dark-bg);
-            box-shadow: 0 0 15px var(--main-neon);
+            box-shadow: 0 0 8px rgba(137, 207, 240, 0.7); /* Daha zarif gölge */
         }
 
         /* --- HESAP MAKİNESİ (Panel) --- */
@@ -291,39 +285,40 @@
             left: 50%;
             transform: translate(-50%, -50%);
             background-color: var(--dark-bg);
-            border: 2px solid var(--secondary-neon);
-            box-shadow: 0 0 30px var(--secondary-neon);
+            border: 1px solid var(--secondary-neon); /* İnce kenarlık */
+            box-shadow: 0 0 15px rgba(170, 255, 221, 0.7); /* Daha zarif gölge */
             border-radius: 6px;
             z-index: 1000;
-            width: 340px; 
-            padding-bottom: 15px;
+            width: 320px; /* Genişlik azaltıldı */
+            padding-bottom: 10px;
         }
         
         #calc-data-set {
-            background-color: rgba(255, 255, 255, 0.05);
-            padding: 10px;
-            margin: 10px 15px;
-            border: 1px dashed var(--danger-neon);
-            font-size: 1em;
+            background-color: rgba(255, 255, 255, 0.03); /* Daha şeffaf */
+            padding: 8px;
+            margin: 10px 12px;
+            border: 1px dashed rgba(255, 153, 153, 0.5); /* Daha soluk noktalı çizgi */
+            font-size: 0.9em;
             color: var(--danger-neon);
-            text-shadow: 0 0 3px var(--danger-neon);
-            max-height: 100px;
+            text-shadow: 0 0 2px rgba(255, 153, 153, 0.7);
+            max-height: 80px; /* Yükseklik azaltıldı */
             overflow-y: auto; 
         }
         
         .calc-header {
-            background-color: #111;
-            padding: 10px;
+            background-color: #1a1f33; /* Daha uyumlu arka plan */
+            padding: 8px;
             font-weight: bold;
-            border-top-left-radius: 4px;
-            border-top-right-radius: 4px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
             color: var(--secondary-neon);
+            font-size: 1em;
         }
         #calc-display {
-            width: calc(100% - 20px);
-            margin: 10px;
-            padding: 15px 10px;
-            font-size: 1.5em;
+            width: calc(100% - 24px); /* Kenar boşluğu düzenlendi */
+            margin: 12px;
+            padding: 12px 10px;
+            font-size: 1.3em;
             font-family: 'Roboto Mono', monospace;
             text-align: right;
             background-color: #000;
@@ -333,62 +328,63 @@
         }
         .calc-keys {
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* 4 sütunlu ızgara */
-            gap: 10px;
-            padding: 0 15px 0;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px; /* Boşluklar azaltıldı */
+            padding: 0 12px 0;
         }
         .calc-keys button {
-            padding: 20px;
-            font-size: 1.2em;
+            padding: 18px; /* Tuş dolgusu azaltıldı */
+            font-size: 1.1em;
             font-family: 'Roboto Mono', monospace;
-            border: 1px solid var(--secondary-neon);
-            border-radius: 4px;
+            border: 1px solid var(--border-color); /* İnce kenarlık */
+            border-radius: 3px;
             cursor: pointer;
-            background-color: rgba(0, 0, 0, 0.3);
-            color: var(--secondary-neon);
+            background-color: rgba(0, 0, 0, 0.2); /* Daha şeffaf */
+            color: var(--font-color); /* Tuş yazıları */
             transition: all 0.2s;
         }
         .calc-keys button:hover {
-            background-color: var(--secondary-neon);
-            color: var(--dark-bg);
-            box-shadow: 0 0 10px var(--secondary-neon);
+            background-color: rgba(170, 255, 221, 0.2); /* Hafif parlamalı hover */
+            color: var(--secondary-neon);
+            box-shadow: 0 0 8px rgba(170, 255, 221, 0.7); /* Yumuşak gölge */
         }
         .calc-keys .key-op {
             color: var(--accent-neon);
-            border-color: var(--accent-neon);
+            border-color: rgba(255, 232, 153, 0.7); /* Yumuşak sarı kenarlık */
         }
         .calc-keys .key-op:hover {
-            background-color: var(--accent-neon);
-            color: var(--dark-bg);
+            background-color: rgba(255, 232, 153, 0.2);
+            color: var(--accent-neon);
         }
         .key-confirm {
-            grid-column: span 4; /* Onayla butonu 4 sütunu da kaplayacak */
+            grid-column: span 4;
             background-color: var(--main-neon);
             color: var(--dark-bg);
             border: none;
+            box-shadow: 0 0 8px rgba(137, 207, 240, 0.7);
         }
         .key-confirm:hover {
             background-color: var(--accent-neon);
-            border-color: var(--accent-neon);
-            box-shadow: 0 0 15px var(--accent-neon);
+            color: var(--dark-bg);
+            box-shadow: 0 0 10px rgba(255, 232, 153, 0.9);
         }
 
         /* --- GERİ BİLDİRİM VE YENİ GÖREV --- */
         #feedback-area {
             margin-top: 20px;
-            font-size: 1.1em;
+            font-size: 1em;
             font-weight: bold;
-            padding: 15px;
+            padding: 12px;
             border-radius: 4px;
-            text-shadow: 0 0 5px currentColor;
+            text-shadow: 0 0 3px currentColor; /* Yumuşak gölge */
         }
         .feedback-correct {
-            background-color: rgba(51, 204, 255, 0.1);
+            background-color: rgba(137, 207, 240, 0.1); /* Daha şeffaf */
             color: var(--success-neon);
             border: 1px solid var(--success-neon);
         }
         .feedback-wrong {
-            background-color: rgba(255, 50, 50, 0.1);
+            background-color: rgba(255, 153, 153, 0.1); /* Daha şeffaf */
             color: var(--danger-neon);
             border: 1px solid var(--danger-neon);
         }
@@ -404,7 +400,7 @@
             <div id="data-set"></div> 
         </div>
 
-        <div class="formula-section">
+        <div class="formula-section" id="formula-section-1">
             <div class="formula-title">Temel A.O. Hesaplama</div>
             <div class="formula-board">
                 <span class="formula-label">A.O =</span>
@@ -416,7 +412,7 @@
             </div>
         </div>
 
-        <div class="formula-section">
+        <div class="formula-section" id="formula-section-2">
              <div class="formula-title">Ters Hesaplama (Kayıp Veri)</div>
             
             <div class="formula-row">
@@ -594,17 +590,17 @@
         const inputVS = document.getElementById('input-vs');
         
         // Tip 2 alanları (V.T. = A.O x V.S)
-        const inputVTCalc = document.getElementById('input-vt-calc');
+        const inputVTCalc = document.getElementById('input-vt-calc'); // SONUÇ GİRİŞİ (Kayıp Değer)
         const inputAOVt = document.getElementById('input-ao-vt');
         const inputVSVt = document.getElementById('input-vs-vt');
         
         // Tip 2 alanları (V.S. = V.T / A.O)
-        const inputVSCalc = document.getElementById('input-vs-calc');
+        const inputVSCalc = document.getElementById('input-vs-calc'); // SONUÇ GİRİŞİ (Veri Sayısı)
         const inputVTVs = document.getElementById('input-vt-vs');
         const inputAOVB = document.getElementById('input-ao-vs'); 
 
-        const formulaSection1 = document.querySelector('.formula-section:nth-child(2)');
-        const formulaSection2 = document.querySelector('.formula-section:nth-child(3)');
+        const formulaSection1 = document.getElementById('formula-section-1');
+        const formulaSection2 = document.getElementById('formula-section-2');
 
         const calculateBtn = document.getElementById('calculate-btn');
         const feedbackArea = document.getElementById('feedback-area');
@@ -613,12 +609,11 @@
         const calcDisplay = document.getElementById('calc-display');
         const calcDataSet = document.getElementById('calc-data-set');
 
-        // --- HESAPLAMA FONKSİYONLARI ---
+        // --- HESAPLAMA POP-UP MANTIĞI ---
         function showCalculator(inputId, showData = false) {
             activeInputId = inputId;
             calcDisplay.value = '';
             
-            // Veri seti gösterimini yönet
             if (showData && currentProblem.data && Array.isArray(currentProblem.data)) {
                 calcDataSet.innerText = `Veri Seti: [ ${currentProblem.data.join(', ')} ]`;
                 calcDataSet.style.display = 'block';
@@ -629,38 +624,34 @@
             calculator.style.display = 'block';
         }
         
-        // Tip 1 VT Girişi için
+        // Hesap Makinesini açan inputlar:
         inputVT.addEventListener('click', () => showCalculator('input-vt', true));
-        // Tip 2 VT Girişi için
         inputVTCalc.addEventListener('click', () => showCalculator('input-vt-calc', false));
-        // Tip 2 AO (V.T. = AO x VS) Girişi için
         inputAOVt.addEventListener('click', () => showCalculator('input-ao-vt', false));
-        // Tip 2 V.T. (V.S. = V.T / AO) Girişi için
         inputVTVs.addEventListener('click', () => showCalculator('input-vt-vs', false));
         
         
         function appendToDisplay(value) {
-            // Çift operatör girmeyi engelle (örneğin ++ veya *+)
             const lastChar = calcDisplay.value.slice(-1);
             if (['+', '-', '*', '/'].includes(value) && ['+', '-', '*', '/'].includes(lastChar)) {
-                calcDisplay.value = calcDisplay.value.slice(0, -1) + value; // Eski operatörü yeniyle değiştir
+                calcDisplay.value = calcDisplay.value.slice(0, -1) + value; 
             } else {
                 calcDisplay.value += value;
             }
         }
 
         function clearDisplay() {
-            calcDisplay.value = calcDisplay.value.slice(0, -1); // Son karakteri sil
+            calcDisplay.value = calcDisplay.value.slice(0, -1);
         }
         
         function clearAll() {
-            calcDisplay.value = ''; // Tümünü temizle
+            calcDisplay.value = '';
         }
         
         function calculateResult() {
             try {
-                // Güvenli hesaplama için eval kullanmadan önce parantez, sayı ve operatör kontrolü yap
-                const result = new Function('return ' + calcDisplay.value.replace(/x/g, '*').replace(/÷/g, '/'))(); // x ve ÷ işaretlerini JS operatörlerine dönüştür
+                // Güvenli hesaplama
+                const result = new Function('return ' + calcDisplay.value.replace(/x/g, '*').replace(/÷/g, '/'))(); 
                 calcDisplay.value = result;
             } catch (error) {
                 calcDisplay.value = 'HATA';
@@ -668,7 +659,7 @@
         }
 
         function confirmVT() {
-            calculateResult(); // Onaylamadan önce sonucu hesapla
+            calculateResult(); 
 
             const targetInput = document.getElementById(activeInputId);
             
@@ -676,32 +667,27 @@
                 targetInput.value = calcDisplay.value;
             }
             calculator.style.display = 'none';
-            checkInputs();
+            checkInputs(); // Giriş yapıldıktan sonra butonu kontrol et
         }
 
         // --- OYUN MANTIĞI ---
         function startNewGame() {
-            // Rastgele bir problem seç
             const randomIndex = Math.floor(Math.random() * gameData.length);
             const problem = gameData[randomIndex];
             currentProblem = problem;
 
-            // Alanları temizle ve başlangıç durumuna getir
             storyText.innerText = problem.story;
             feedbackArea.innerHTML = '';
             feedbackArea.className = '';
-            calculateBtn.style.display = 'none';
+            calculateBtn.style.display = 'none'; // Başlangıçta butonu gizle
 
-            // Tüm inputları temizle
             document.querySelectorAll('.formula-input').forEach(input => input.value = '');
             
-            // Senaryo tipine göre formül panellerini göster/gizle
             if (problem.type === 1) {
                 // Tip 1: Klasik A.O.
                 formulaSection1.style.display = 'block';
                 formulaSection2.style.display = 'none';
                 
-                // DATA SETİNİ DOLDUR VE GÖRÜNÜR YAP
                 dataSetText.innerText = `[ ${problem.data.join(', ')} ]`;
                 dataSetText.style.display = 'block'; 
                 
@@ -710,41 +696,56 @@
                 formulaSection1.style.display = 'none';
                 formulaSection2.style.display = 'block';
                 
-                // DATA SETİNİ GİZLE
                 dataSetText.innerText = ''; 
                 dataSetText.style.display = 'none';
                 
-                // Formül ipuçları
-                inputVTCalc.placeholder = problem.formulaNeeded === 'VT' ? 'İhtiyacın olan V.T.' : 'V.T Girişi';
-                inputVSCalc.placeholder = problem.formulaNeeded === 'VS' ? 'İhtiyacın olan V.S.' : 'V.S Girişi';
+                // Placeholder ayarları
+                inputVTCalc.placeholder = problem.formulaNeeded === 'VT' ? 'SONUÇ' : 'V.T Girişi';
+                inputVSCalc.placeholder = problem.formulaNeeded === 'VS' ? 'SONUÇ' : 'V.S Girişi';
+                
+                // Tip 2'de ilgili sabit değerleri doldur
+                if (problem.formulaNeeded === 'VT') {
+                    // Kayıp Değer (V.T.) için gerekli olan A.O ve V.S değerleri
+                    inputAOVt.value = problem.data.ao2;
+                    inputVSVt.value = problem.data.vs2;
+                } else if (problem.formulaNeeded === 'VS') {
+                    // Veri Sayısı (V.S.) için gerekli olan V.T ve A.O değerleri
+                    inputVTVs.value = problem.data.vt;
+                    inputAOVB.value = problem.data.ao;
+                }
             }
         }
 
+        // --- HESAPLA BUTONU KONTROLÜ (DÜZELTİLMİŞ) ---
         function checkInputs() {
-            // Tip 1 kontrol
+            let buttonShouldBeVisible = false;
+            
             if (currentProblem.type === 1) {
-                if (inputVT.value && inputVS.value && parseFloat(inputVS.value) > 0) {
-                    calculateBtn.style.display = 'block';
-                    return true;
+                // Tip 1: Hem VT hem de VS dolu olmalı
+                if (inputVT.value.trim() && inputVS.value.trim() && parseFloat(inputVS.value.trim()) > 0) {
+                    buttonShouldBeVisible = true;
                 }
             } 
-            // Tip 2 kontrol (V.T = A.O x V.S) - Kayıp Değer Bulma
-            else if (currentProblem.type === 2 && currentProblem.formulaNeeded === 'VT') {
-                if (inputVTCalc.value) { // Kullanıcı sonucu bu alana girmeli
-                    calculateBtn.style.display = 'block';
-                    return true;
+            
+            else if (currentProblem.type === 2) {
+                if (currentProblem.formulaNeeded === 'VT') {
+                    // Tip 2 (Kayıp Değer): Sadece FINAL SONUÇ kutusu (inputVTCalc) dolu olmalı
+                    if (inputVTCalc.value.trim()) { 
+                        buttonShouldBeVisible = true;
+                    }
+                } else if (currentProblem.formulaNeeded === 'VS') {
+                    // Tip 2 (Veri Sayısı): Sadece FINAL SONUÇ kutusu (inputVSCalc) dolu olmalı
+                    if (inputVSCalc.value.trim()) { 
+                        buttonShouldBeVisible = true;
+                    }
                 }
-            } 
-            // Tip 2 kontrol (V.S = V.T / A.O) - Veri Sayısı Bulma
-            else if (currentProblem.type === 2 && currentProblem.formulaNeeded === 'VS') {
-                 if (inputVSCalc.value) { // Kullanıcı sonucu bu alana girmeli
-                    calculateBtn.style.display = 'block';
-                    return true;
-                 }
             }
 
-            calculateBtn.style.display = 'none';
-            return false;
+            if (buttonShouldBeVisible) {
+                calculateBtn.style.display = 'block';
+            } else {
+                calculateBtn.style.display = 'none';
+            }
         }
 
         function checkAnswer() {
@@ -774,12 +775,12 @@
             // Tip 2: Kayıp Veri Kontrolü
             else if (currentProblem.type === 2) {
                 if (currentProblem.formulaNeeded === 'VT') {
-                    userAnswer = parseFloat(inputVTCalc.value); // V.T. hesaplaması
+                    userAnswer = parseFloat(inputVTCalc.value); 
                 } else if (currentProblem.formulaNeeded === 'VS') {
-                    userAnswer = parseFloat(inputVSCalc.value); // V.S. hesaplaması
+                    userAnswer = parseFloat(inputVSCalc.value); 
                 }
                 
-                const correctFinalAnswer = currentProblem.correctAO; // Bu, kayıp değeri (V.S. veya V.T. farkı) temsil eder
+                const correctFinalAnswer = currentProblem.correctAO; 
                 
                 if (Math.abs(userAnswer - correctFinalAnswer) < 0.01) {
                      feedbackArea.className = 'feedback-correct';
@@ -792,14 +793,20 @@
         }
 
         // --- OLAY DİNLEYİCİLER (EVENT LISTENERS) ---
-        // Tip 1 VS Giriş Kontrolü
+        
+        // Tip 1 Kontrolü için dinleyici
         inputVS.addEventListener('input', checkInputs);
         
-        // Tip 2 input kontrolü (Sadece hesap makinesi kullanılamayan inputlar)
+        // Tip 2 Kontrolü için final sonuç kutularına dinleyici eklendi
+        // Kullanıcı bu kutulara manuel olarak da yazabilir.
+        inputVSCalc.addEventListener('input', checkInputs);
+        inputVTCalc.addEventListener('input', checkInputs);
+        
+        // Diğer inputlara da dinleyici eklendi, böylece herhangi bir etkileşimde kontrol tetiklenir.
         inputVSVt.addEventListener('input', checkInputs);
         inputAOVB.addEventListener('input', checkInputs);
-        inputVSCalc.addEventListener('input', checkInputs); // VS bulma sonucunun girildiği alan
-        inputVTCalc.addEventListener('input', checkInputs); // VT bulma sonucunun girildiği alan
+        inputVTVs.addEventListener('input', checkInputs);
+        inputAOVB.addEventListener('input', checkInputs);
         
         
         calculateBtn.addEventListener('click', checkAnswer);
@@ -810,5 +817,3 @@
     </script>
 </body>
 </html>
-
-
