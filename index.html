@@ -31,7 +31,7 @@
             margin: 0;
             padding: 20px;
             box-sizing: border-box;
-            overflow: auto; /* İçerik taşarsa kaydırma çubuğu çıksın */
+            overflow: auto; 
         }
 
         /* --- YANIP SÖNEN MATEMATİKSEL SEMBOLLER (NEFES ALMA) --- */
@@ -102,14 +102,14 @@
             padding: 15px;
             margin-bottom: 20px;
             text-align: left;
-            min-height: 100px; /* Hikaye kutusunun minimum yüksekliği */
+            min-height: 100px; 
         }
         #story-text {
             font-size: 1.1em;
             line-height: 1.6;
         }
         #data-set {
-            /* DÜZELTME: Veri setini koyu arka planda belirgin yapmak için rengi değiştirildi */
+            /* Veri setini belirgin yapmak için rengi değiştirildi */
             font-size: 1.2em;
             font-weight: bold;
             color: var(--accent-neon); /* Sarı Neon yapıldı */
@@ -206,30 +206,42 @@
             color: #777;
         }
 
-        /* --- MOBİL UYUMLULUK DÜZELTMESİ --- */
+        /* --- MOBİL UYUMLULUK DÜZELTMESİ (TAŞMA SORUNU) --- */
         @media (max-width: 500px) {
             .formula-row {
-                /* Mobil cihazda, 3 input kutusu yan yana sığsın diye esnekliği artırıyoruz */
-                flex-wrap: wrap; /* Gerekirse alt satıra geçsin */
-                justify-content: space-around; /* Yatayda boşlukları dağıt */
+                /* Gerekirse alt satıra geçsin */
+                flex-wrap: wrap; 
+                /* Yatayda boşlukları dağıt */
+                justify-content: space-around; 
             }
             .formula-row > * {
-                flex-grow: 1; /* Esneklik ver */
-                margin: 5px; /* Dikeyde de boşluk bırak */
-                min-width: 80px; /* Çok daralmasını engelle */
+                /* Esneklik ver */
+                flex-grow: 1; 
+                /* Dikeyde de boşluk bırak */
+                margin: 5px; 
+                /* Çok daralmasını engelle */
+                min-width: 80px; 
             }
             .formula-input {
-                width: 100%; /* Sığması için tam genişlik alsın */
-                max-width: 120px; /* Çok genişlemeyi engelle */
+                /* Sığması için tam genişlik alsın */
+                width: 100%; 
+                /* Çok genişlemeyi engelle */
+                max-width: 120px; 
                 box-sizing: border-box;
-                height: 35px; /* Biraz küçült */
+                /* Biraz küçült */
+                height: 35px; 
             }
             
             /* Eşittir (=) ve bölü (/) işaretleri dar alanda sıkışmasın */
             .formula-row span {
                 margin: 5px; 
                 font-size: 1em; /* Küçült */
-                align-self: center; /* Ortada hizala */
+                align-self: center; 
+            }
+            
+            /* Hesap makinesi mobil ekranın tamamını kaplasın */
+             .calculator-popup {
+                width: 90%; 
             }
         }
         /* --- BUTONLAR --- */
@@ -283,7 +295,7 @@
             box-shadow: 0 0 30px var(--secondary-neon);
             border-radius: 6px;
             z-index: 1000;
-            width: 340px; /* Panel genişletildi */
+            width: 340px; 
             padding-bottom: 15px;
         }
         
@@ -296,7 +308,7 @@
             color: var(--danger-neon);
             text-shadow: 0 0 3px var(--danger-neon);
             max-height: 100px;
-            overflow-y: auto; /* Çok veri varsa kaydırma çubuğu çıksın */
+            overflow-y: auto; 
         }
         
         .calc-header {
@@ -689,16 +701,18 @@
                 formulaSection1.style.display = 'block';
                 formulaSection2.style.display = 'none';
                 
-                // DATA SETİNİ GÖSTER: Sadece Tip 1'de görünür
+                // DATA SETİNİ DOLDUR VE GÖRÜNÜR YAP
                 dataSetText.innerText = `[ ${problem.data.join(', ')} ]`;
+                dataSetText.style.display = 'block'; 
                 
             } else {
                 // Tip 2: Kayıp Veri Bulma
                 formulaSection1.style.display = 'none';
                 formulaSection2.style.display = 'block';
                 
-                // DATA SETİNİ GİZLE: Tip 2'de sadece hikaye metni kullanılır
+                // DATA SETİNİ GİZLE
                 dataSetText.innerText = ''; 
+                dataSetText.style.display = 'none';
                 
                 // Formül ipuçları
                 inputVTCalc.placeholder = problem.formulaNeeded === 'VT' ? 'İhtiyacın olan V.T.' : 'V.T Girişi';
@@ -796,4 +810,5 @@
     </script>
 </body>
 </html>
+
 
